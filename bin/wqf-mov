@@ -13,7 +13,7 @@ python "${cmd}" --help
 
 python "${cmd}" "${@}" \
   "../FCWQ_cube_2016-2020_v3.0.zarr" \
-  "../FCWQ_bgcm_2016-2020_v3.0.zarr" \
+  "../FCWQ_bgcm_2016-2020_v1.0.zarr" \
   "../FCWQ_xgbH_2016-2020_v1.0.zarr"
 
 for fn in in_*.png
