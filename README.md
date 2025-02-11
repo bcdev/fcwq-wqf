@@ -1,5 +1,5 @@
 <video controls>
-<source src="https://github.com/user-attachments/assets/f945ceee-3a75-41cb-99c2-1d10bac1e1a7" type="video/mp4">
+<source src="https://github.com/user-attachments/assets/c3677da7-d674-4ba3-bb6f-694701ef1087" type="video/mp4">
 </video>
 
 # Forecasting Water Quality from Space (FC-WQ)
