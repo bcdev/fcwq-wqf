@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#  Copyright (c) Brockmann Consult, 2024
+#  License: MIT
+set -e
+## Times the processor. Usage example:
+#
+#  ./wqf-timeit in.nc fc.nc
+#
+procCmd="$(which wqf)"
+timeCmd="$(which time)"
+
+reader="zarr"
+writer="zarr"
+
+# shellcheck disable=SC2124
+source="${@:$#-$#-2:1}"
+# shellcheck disable=SC2124
+target="${@:$#-$#-1:1}"
+
+if [[ "${source}" == *.nc ]]
+then
+  reader="h5netcdf"
+fi
+if [[ "${target}" == *.nc ]]
+then
+  writer="h5netcdf"
+fi
+
+process() {
+  "${timeCmd}" --verbose \
+  "${procCmd}" \
+    --engine-reader "${reader}" \
+    --engine-writer "${writer}" \
+    --log-level info
+}
+
+
+process "$@"

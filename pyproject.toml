@@ -1,0 +1,119 @@
+#  Copyright (c) Brockmann Consult GmbH, 2024
+#  License: MIT
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wqf"
+dynamic = ["version"]
+authors = [
+    { name = "Jorge Garcia", email = "jorge.garcia@brockmann-consult.de" },
+    { name = "Ralf Quast", email = "ralf.quast@brockmann-consult.de" },
+    { name = "Jorrit Scholze", email = "jorrit.scholze@brockmann-consult.de" },
+]
+description = """\
+  A Python package for water quality forecasting\
+  """
+keywords = [
+    "time series forecasting",
+    "water quality",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Oceanography",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Private :: No Upload",
+]
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE", content-type = "text/plain" }
+requires-python = ">=3.10"
+dependencies = [
+    "dask",
+    "dask-image",
+    "cartopy",
+    "h5netcdf",
+    "matplotlib",
+    "netcdf4",
+    "xarray",
+    "xbatcher==0.4.0",
+    # no "xcube-core",
+    "xgboost==2.1.3",
+    "zarr",
+]
+
+[project.optional-dependencies]
+extra = [
+    "jupyterlab==4.2.5",
+    "nbstripout",
+    "seaborn",
+]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+lint = [
+    "black",
+    "flake8",
+    "jupyterlab-black",
+]
+
+
+[project.scripts]
+wqf = "wqf.main.main:main"
+
+[project.urls]
+Repository = "https://github.com/bcdev/fcwq-wqf"
+
+[tool.black]
+line-length = 78
+target-version = ["py310"]
+
+[tool.coverage.report]
+exclude_also = [
+    "@nb.guvectorize",
+    "@nb.vectorize",
+]
+
+[tool.coverage.run]
+omit = [
+    "wqf/interface/*",
+    "wqf/templates/*",
+    "wqf/val/*",
+]
+
+[tool.pytest.ini_options]
+addopts = "-p no:warnings"
+testpaths = ["test"]
+
+[tool.setuptools.dynamic]
+version = { attr = "wqf.__version__" }
+
+[tool.setuptools.packages.find]
+include = [
+    "wqf*",
+]
+exclude = [
+    "test*",
+]
+
+[tool.setuptools.package-data]
+"wqf.config" = [
+    "*.json",
+    "*.yml",
+]
+"wqf.templates" = [
+    "*.cdl",
+]
+"wqf.xgb.config" = [
+    "*.json",
+    "*.yml",
+]

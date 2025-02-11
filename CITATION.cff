@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: Water Quality Forecasting
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jorge
+    family-names: Garcia
+    email: jorge.garcia@brockmann-consult.de
+    affiliation: Brockmann Consult GmbH
+  - given-names: Ralf
+    family-names: Quast
+    email: ralf.quast@brockmann-consult.de
+    affiliation: Brockmann Consult GmbH
+    orcid: 'https://orcid.org/0000-0002-6857-6503'
+  - given-names: Jorrit
+    family-names: Scholze
+    email: jorrit.scholze@brockmann-consult.de
+    affiliation: Brockmann Consult GmbH
+license: MIT
+repository-code: >-
+  https://github.com/bcdev/fcwq-wqf/
+url: https://bcdev.github.io/fcwq-wqf/
+abstract: >-
+  This repository includes software authored for the
+  Forecasting Water Quality from Space study proposed by
+  and granted to Brockmann Consult GmbH in reply to ESA's
+  Invitation to Tender for Future EO-1 EO Science for
+  Society Permanently Open Call for Proposals, ESA Ref.
+  ESA AO/1-10468/20/I-FvO.

@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+#  Copyright (c) Brockmann Consult, 2024
+#  License: MIT
+set -e
+## Produces plots for generating a movie. Usage example:
+#
+#  ./wqf-mov
+#
+bin="$(dirname "$0")"
+cmd="${bin}/../wqf/val/mov.py"
+
+python "${cmd}" --help
+
+python "${cmd}" "${@}" \
+  "../FCWQ_cube_2016-2020_v3.0.zarr" \
+  "../FCWQ_bgcm_2016-2020_v3.0.zarr" \
+  "../FCWQ_xgbH_2016-2020_v1.0.zarr"
+
+for fn in in_*.png
+do
+  fr="${fn/in___/afram}"
+  if [ -f "${fr}" ]
+  then
+    continue
+  fi
+  an="${fn/in___/an___}"
+  f1="${fn/in___/fc_1_}"
+  f2="${fn/in___/fc_2_}"
+  f3="${fn/in___/fc_3_}"
+  f4="${fn/in___/fc_4_}"
+  f5="${fn/in___/fc_5_}"
+  f6="${fn/in___/fc_6_}"
+  if [ ! -f "${f6}" ]
+  then
+    continue
+  fi
+  montage "${fn}" "${f1}" "${f2}" "${f3}" "${an}" "${f4}" "${f5}" "${f6}" -tile 4x2 -geometry +0+0 "${fr}"
+done
+
+for fn in in_*.png
+do
+  fr="${fn/in___/ffram}"
+  if [ -f "${fr}" ]
+  then
+    continue
+  fi
+  f1="${fn/in___/fc_1_}"
+  f2="${fn/in___/fc_2_}"
+  f3="${fn/in___/fc_3_}"
+  f4="${fn/in___/fc_4_}"
+  f5="${fn/in___/fc_5_}"
+  f6="${fn/in___/fc_6_}"
+  f7="${fn/in___/fc_7_}"
+  if [ ! -f "${f7}" ]
+  then
+    continue
+  fi
+  montage "${fn}" "${f1}" "${f2}" "${f3}" "${f4}" "${f5}" "${f6}" "${f7}" -tile 4x2 -geometry +0+0 "${fr}"
+done

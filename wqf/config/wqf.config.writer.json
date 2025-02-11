@@ -1,0 +1,81 @@
+{
+    "_comments_": {
+        "copyright": "Copyright (c) Brockmann Consult GmbH, 2024",
+        "license": "MIT",
+        "summary": "This JSON file provides configuration parameters and semantic mappings for the WQF writer."
+    },
+
+    "config.wqf.writer.chunks": {
+        "time": 0,
+        "lat": 0,
+        "lon": 0
+    },
+
+    "config.wqf.writer.engine": "zarr",
+
+    "config.wqf.writer.zlib": "true",
+
+    "config.wqf.writer.complevel": 1,
+
+    "config.wqf.writer.shuffle": "true",
+
+    "attrs": {
+        "Conventions": "CF-1.11",
+        "acknowledgements": "Based on Copernicus Service information 2016, 2017, 2018, 2019, 2020. Based on unpublished chlorophyll concentration data provided by the OSPAR Commission 2016, 2017, 2018, 2019, 2020. Public OSPAR data are available at OSPAR Data and Information Management System, https://odims.ospar.org/.",
+        "creator": "Brockmann Consult GmbH",
+        "funding": "ESA ITT for Future EO-1 EO Science for Society Permanently Open Call for Proposals, ESA Ref. ESA AO/1-10468/20/I-FvO",
+        "product": "Water quality forecast (WQF)",
+        "license": "CC BY-NC-ND 4.0, https://creativecommons.org/licenses/by-nc-nd/4.0/"
+    },
+
+    "time": {
+        "name": "time",
+        "dims": ["time"],
+        "dtype": "int64",
+        "attrs": {
+            "axis": "T",
+            "long_name": "time",
+            "standard_name": "time"
+        }
+    },
+
+    "lat": {
+        "name": "lat",
+        "dims": ["lat"],
+        "dtype": "double",
+        "attrs": {
+            "long_name": "latitude",
+            "standard_name": "latitude",
+            "units": "degrees_north",
+            "valid_min": -90.0,
+            "valid_max": 90.0
+        }
+    },
+
+    "lon": {
+        "name": "lon",
+        "dims": ["lon"],
+        "dtype": "double",
+        "attrs": {
+            "long_name": "longitude",
+            "standard_name": "longitude",
+            "units": "degrees_east",
+            "valid_min": -180.0,
+            "valid_max": 180.0
+        }
+    },
+
+    "chl": {
+        "name": "chl",
+        "dims": ["time", "lat", "lon"],
+        "dtype": "single",
+        "attrs": {
+            "long_name": "chlorophyll concentration",
+            "standard_name": "chlorophyll_concentration_in_sea_water",
+            "units": "mg m-3",
+            "valid_min": 0.0,
+            "valid_max": 100.0,
+            "coordinates": "time lat lon"
+        }
+    }
+}

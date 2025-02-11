@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#  Copyright (c) Brockmann Consult, 2024
+#  License: MIT
+set -e
+## Produces plots for the PVR. Usage example:
+#
+#  ./wqf-pvr
+#
+bin="$(dirname "$0")"
+cmd="${bin}/../wqf/val/pvr.py"
+
+python "${cmd}" --help
+
+python "${cmd}" --aws \
+  "FCWQ_cube_2016-2020_v3.0.zarr" \
+  "FCWQ_bgcm_2016-2020_v1.0.zarr" \
+  "FCWQ_xgbH_2016-2020_v1.0.zarr"

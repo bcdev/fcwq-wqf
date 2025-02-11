@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#  Copyright (c) Brockmann Consult, 2024
+#  License: MIT
+set -e
+## Edits the global attributes of a BGC model dataset in place.
+#  Usage example:
+#
+#  ./wqf-atted-bgcm
+#
+bin="$(dirname "$0")"
+cmd="${bin}/../wqf/util/atted.py"
+
+python "${cmd}" --help
+
+python "${cmd}" --acknowledge-copernicus-service "FCWQ_bgcm_2016-2020_v1.1.zarr"

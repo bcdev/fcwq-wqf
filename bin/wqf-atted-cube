@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#  Copyright (c) Brockmann Consult, 2024
+#  License: MIT
+set -e
+## Edits the global attributes of a data cube in place.
+#  Usage example:
+#
+#  ./wqf-atted-cube
+#
+bin="$(dirname "$0")"
+cmd="${bin}/../wqf/util/atted.py"
+
+python "${cmd}" --help
+
+python "${cmd}" --acknowledge-copernicus-service --acknowledge-ospar "FCWQ_cube_2016-2020_v3.0.zarr"

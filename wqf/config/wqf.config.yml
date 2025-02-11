@@ -1,0 +1,57 @@
+#  Copyright (c) Brockmann Consult GmbH, 2024
+#  License: MIT
+
+## Do not read from or write to AWS team store
+aws: False
+
+## The chunk size is determined by the reader
+chunk_size_lat:
+
+## The chunk size is determined by the reader
+chunk_size_lon:
+
+## The depth level (m) to consider, if the source dataset
+#  exhibits depth dimension and coordinate axis.
+depth_level: 3.0
+
+## Detect the reader engine automatically
+engine_reader:
+
+## Detect the writer engine automatically
+engine_writer:
+
+## No lateral Gaussian filter [0.5, 1.0, 1.5, 2.0, 2.5, 3.0] is applied
+gaussian_filter:
+
+## The default forecast horizon
+horizon: 1
+
+## The default log level
+log_level: "info"
+
+## The default mode ["multithreading", "synchronous"]
+mode: "multithreading"
+
+## The default XGB model
+model: "default"
+
+## The number of threads is determined by the system
+nthread:
+
+## The number of workers is determined by the system
+workers:
+
+## Do not generate profiling information
+prof:
+
+## Disable progress bar display.
+progress: False
+
+## Disable stack traces.
+stack_traces: False
+
+## Disable forecast test mode.
+test: False
+
+## Use the working directory for temporary files.
+tmpdir: "."

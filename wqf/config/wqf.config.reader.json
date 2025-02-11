@@ -1,0 +1,29 @@
+{
+    "_comments_": {
+        "copyright": "Copyright (c) Brockmann Consult GmbH, 2024",
+        "license": "MIT",
+        "summary": "This JSON file provides configuration parameters and semantic mappings for the WQF reader."
+    },
+
+    "config.wqf.reader.chunks": {
+        "time": -1,
+        "lat": 0,
+        "lon": 0
+    },
+
+    "config.wqf.reader.engine": "zarr",
+
+    "config.wqf.reader.decode_cf": "true",
+
+    "config.wqf.reader.decode_coords": "true",
+
+    "config.wqf.reader.decode_times": "true",
+
+    "config.wqf.reader.decode_timedelta": "true",
+
+    "config.wqf.reader.use_cftime": "false",
+
+    "config.wqf.reader.concat_characters": "true",
+
+    "config.wqf.reader.inline_array": "false"
+}

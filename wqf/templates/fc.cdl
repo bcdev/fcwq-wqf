@@ -1,0 +1,117 @@
+netcdf fc {
+dimensions:
+	time = 3 ;
+	lat = 469 ;
+	lon = 527 ;
+variables:
+	int64 time(time) ;
+		string time:axis = "T" ;
+		string time:long_name = "time" ;
+		string time:standard_name = "time" ;
+		string time:units = "days since 2020-07-06 00:00:00" ;
+		string time:calendar = "proleptic_gregorian" ;
+		time:_Storage = "chunked" ;
+		time:_ChunkSizes = 3 ;
+		time:_Shuffle = "true" ;
+		time:_DeflateLevel = 1 ;
+		time:_Endianness = "little" ;
+		time:_NoFill = "true" ;
+	double lat(lat) ;
+		lat:_FillValue = NaN ;
+		string lat:long_name = "latitude" ;
+		string lat:standard_name = "latitude" ;
+		string lat:units = "degrees_north" ;
+		lat:valid_min = -90. ;
+		lat:valid_max = 90. ;
+		lat:_Storage = "chunked" ;
+		lat:_ChunkSizes = 469 ;
+		lat:_Shuffle = "true" ;
+		lat:_DeflateLevel = 1 ;
+		lat:_Endianness = "little" ;
+	double lon(lon) ;
+		lon:_FillValue = NaN ;
+		string lon:long_name = "longitude" ;
+		string lon:standard_name = "longitude" ;
+		string lon:units = "degrees_east" ;
+		lon:valid_min = -180. ;
+		lon:valid_max = 180. ;
+		lon:_Storage = "chunked" ;
+		lon:_ChunkSizes = 527 ;
+		lon:_Shuffle = "true" ;
+		lon:_DeflateLevel = 1 ;
+		lon:_Endianness = "little" ;
+	float chl(time, lat, lon) ;
+		chl:_FillValue = NaNf ;
+		string chl:long_name = "chlorophyll concentration" ;
+		string chl:standard_name = "chlorophyll_concentration_in_sea_water" ;
+		string chl:units = "mg m-3" ;
+		chl:valid_min = 0.f ;
+		chl:valid_max = 100.f ;
+		string chl:coordinates = "time lat lon" ;
+		chl:_Storage = "chunked" ;
+		chl:_ChunkSizes = 3, 67, 31 ;
+		chl:_Shuffle = "true" ;
+		chl:_DeflateLevel = 1 ;
+		chl:_Endianness = "little" ;
+
+// global attributes:
+		string :Conventions = "CF-1.11" ;
+		string :acknowledgements = "Based on Copernicus Service information 2016, 2017, 2018, 2019, 2020. Based on unpublished chlorophyll concentration data provided by the OSPAR Commission 2016, 2017, 2018, 2019, 2020. Public OSPAR data are available at OSPAR Data and Information Management System, https://odims.ospar.org/." ;
+		string :creator = "Brockmann Consult GmbH" ;
+		string :funding = "ESA ITT for Future EO-1 EO Science for Society Permanently Open Call for Proposals, ESA Ref. ESA AO/1-10468/20/I-FvO" ;
+		string :product = "Water quality forecast (WQF)" ;
+		string :license = "CC BY-NC-ND 4.0, https://creativecommons.org/licenses/by-nc-nd/4.0/" ;
+		string :version = "2025.1.0" ;
+		string :uuid = "d449b8a6-afb1-45bf-92e3-9453ad099bd5" ;
+		:_NCProperties = "version=2,h5netcdf=1.4.0,hdf5=1.14.3,h5py=3.12.1" ;
+		:_SuperblockVersion = 0 ;
+		:_IsNetcdf4 = 1 ;
+		:_Format = "netCDF-4" ;
+data:
+
+ time = 0, 1, 2 ;
+
+ lat = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ;
+
+ lon = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ;
+}

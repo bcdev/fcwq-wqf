@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#  Copyright (c) Brockmann Consult, 2024
+#  License: MIT
+set -e
+## Produces plots for the Test (Site) Data Report (TDR).
+#  Usage example:
+#
+#  ./wqf-tdr
+#
+bin="$(dirname "$0")"
+cmd="${bin}/../wqf/val/tdr.py"
+
+python "${cmd}" --help
+
+python "${cmd}" "../FCWQ_cube_2016-2020_v3.0.zarr"

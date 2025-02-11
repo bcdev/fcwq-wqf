@@ -1,0 +1,13 @@
+#  Copyright (c) Brockmann Consult GmbH, 2024
+#  License: MIT
+
+## The XGB models registered by name.
+models:
+  ## The default model
+  "default": "t1t2t3t4t5chl_natural.json"
+  ## North Sea (Central and South East)
+  "ns-central": "t1t2t3t4t5chl_central.json"
+  ## North Sea (Belgian and Dutch Coast, German Bight)
+  "ns-coastal": "t1t2t3t4t5chl_coastal.json"
+  ## North Sea
+  "ns-natural": "t1t2t3t4t5chl_natural.json"
