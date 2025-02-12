@@ -38,7 +38,7 @@ def plot_analysis(chl: DataArray, period: Period):
             continue
         ScenePlot().plot(
             chl[t],
-            title=f"Reanalysis {time}",
+            title=f"Analysis {time}",
             fn=file,
             cbar_label=r"chlorophyll concentration (mg m$^{-3}$)",
             norm=plc.SymLogNorm(1.0, linscale=0.1, vmin=0.0, vmax=100.0),
