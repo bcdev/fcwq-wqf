@@ -119,12 +119,13 @@ def generate_figures(args):
     ref.close()
     obs.close()
 
-    obs = reader.read(args.cube_id, depth_level=3.0)
-    ref, pre = BGC(args).predict(obs)
-    plot_analysis(pre, period=period)
-    pre.close()
-    ref.close()
-    obs.close()
+    if not args.no_analysis:
+        obs = reader.read(args.cube_id, depth_level=3.0)
+        ref, pre = BGC(args).predict(obs)
+        plot_analysis(pre, period=period)
+        pre.close()
+        ref.close()
+        obs.close()
 
     for h in [1, 2, 3, 4, 5, 6, 7]:
         obs = reader.read(args.cube_id, depth_level=3.0)
@@ -153,6 +154,22 @@ if __name__ == "__main__":
         default=False,
         required=False,
         dest="aws",
+    )
+    parser.add_argument(
+        "--analysis",
+        help="plot BGCM analysis",
+        action="store_true",
+        default=True,
+        required=False,
+        dest="analysis",
+    )
+    parser.add_argument(
+        "--no-analysis",
+        help="do not plot BGCM analysis",
+        action="store_false",
+        default=False,
+        required=False,
+        dest="analysis",
     )
     parser.add_argument(
         "--gaussian-filter",

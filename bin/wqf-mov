@@ -24,6 +24,10 @@ do
     continue
   fi
   an="${fn/in___/an___}"
+  if [ ! -f "${an}" ]
+  then
+    continue
+  fi
   f1="${fn/in___/fc_1_}"
   f2="${fn/in___/fc_2_}"
   f3="${fn/in___/fc_3_}"
