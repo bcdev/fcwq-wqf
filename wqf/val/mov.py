@@ -38,7 +38,7 @@ def plot_analysis(chl: DataArray, period: Period):
             continue
         ScenePlot().plot(
             chl[t],
-            title=f"Analysis {time}",
+            title=f"(Re)analysis {time}",
             fn=file,
             cbar_label=r"chlorophyll concentration (mg m$^{-3}$)",
             norm=plc.SymLogNorm(1.0, linscale=0.1, vmin=0.0, vmax=100.0),
@@ -49,14 +49,14 @@ def plot_analysis(chl: DataArray, period: Period):
 
 
 def plot_forecast(
-    chl: DataArray, period: Period, sigma: Number | None, h: int
+    chl: DataArray, period: Period, fwhm: Number | None, h: int
 ):
     chl = period.slice(chl)
 
-    if sigma is not None:
+    if fwhm is not None:
         g = Gaussian(chl.dtype)
         chl = DataArray(
-            data=g.apply_to(chl.data, sigma=sigma),
+            data=g.apply_to(chl.data, fwhm=fwhm),
             coords=chl.coords,
             dims=chl.dims,
             attrs=chl.attrs,
@@ -79,13 +79,13 @@ def plot_forecast(
         )
 
 
-def plot_observed(chl: DataArray, period: Period, sigma: Number | None):
+def plot_observed(chl: DataArray, period: Period, fwhm: Number | None):
     chl = period.slice(chl)
 
-    if sigma is not None:
+    if fwhm is not None:
         g = Gaussian(chl.dtype)
         chl = DataArray(
-            data=g.apply_to(chl.data, sigma=sigma),
+            data=g.apply_to(chl.data, fwhm=fwhm),
             coords=chl.coords,
             dims=chl.dims,
             attrs=chl.attrs,
@@ -114,7 +114,7 @@ def generate_figures(args):
 
     obs = reader.read(args.cube_id, depth_level=3.0)
     ref, pre = XGB(args).predict(obs)
-    plot_observed(ref, period=period, sigma=args.sigma)
+    plot_observed(ref, period=period, fwhm=args.fwhm)
     pre.close()
     ref.close()
     obs.close()
@@ -130,7 +130,7 @@ def generate_figures(args):
     for h in [1, 2, 3, 4, 5, 6, 7]:
         obs = reader.read(args.cube_id, depth_level=3.0)
         ref, pre = XGB(args).predict(obs, h=h)
-        plot_forecast(pre, period=period, sigma=args.sigma, h=h)
+        plot_forecast(pre, period=period, fwhm=args.fwhm, h=h)
         pre.close()
         ref.close()
         obs.close()
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--analysis",
-        help="plot BGCM analysis",
+        help="plot BGCM (re)analysis",
         action="store_true",
         default=True,
         required=False,
@@ -165,7 +165,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--no-analysis",
-        help="do not plot BGCM analysis",
+        help="do not plot BGCM (re)analysis",
         action="store_false",
         default=False,
         required=False,
@@ -173,13 +173,13 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--gaussian-filter",
-        help="specify the standard deviation (pixels) of a lateral "
-        "Gaussian filter applied to the forecast. If not specified "
-        "no filter is applied.",
+        help="specify the full width at half maximum (pixels) of "
+        "a lateral Gaussian filter applied to the forecast. "
+        "If not specified no filter is applied.",
         choices=[0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
         type=float,
         required=False,
-        dest="sigma",
+        dest="fwhm",
     )
     parser.add_argument(
         "--period-start",

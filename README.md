@@ -91,9 +91,10 @@ will print a detailed usage message to the screen:
                             specify the engine used to write the target product
                             file. (default: None)
       --gaussian-filter {0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0}
-                            specify the standard deviation (pixels) of a lateral
-                            Gaussian filter applied to the forecast. If not
-                            specified no filter is applied. (default: None)
+                            specify the full width at half maximum (pixels) of
+                            a lateral Gaussian filter applied to the forecast.
+                            If not specified no filter is applied. (default:
+                            None)
       --horizon {1,2,3,4,5,6,7}
                             specify the forecast horizon (days). (default: None)
       --log-level {debug,info,warning,error,off}

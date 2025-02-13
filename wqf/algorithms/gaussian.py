@@ -22,14 +22,17 @@ class Gaussian(Algorithm):
     """
 
     @override
-    def apply_to(self, cube: da.Array, *, sigma: Number = 1.0) -> da.Array:
+    def apply_to(self, cube: da.Array, *, fwhm: Number = 1.0) -> da.Array:
         """
         Applies a lateral Gaussian filter to a data cube.
 
         :param cube: The data cube.
-        :param sigma: The standard deviation of the Gaussian kernel (pixels).
+        :param fwhm: The full width at half maximum of the Gaussian
+        kernel (pixels).
         :return: The filtered data cube.
         """
+        # noinspection PyTypeChecker
+        sigma = fwhm / 2.35482
         m = da.isnan(cube)
         v = da.where(m, 0.0, cube)
         w = da.where(m, 0.0, 1.0)
