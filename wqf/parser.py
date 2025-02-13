@@ -118,7 +118,6 @@ class Parser:
             help="specify the full width at half maximum (pixels) of "
             "a lateral Gaussian filter applied to the forecast. "
             "If not specified no filter is applied.",
-            choices=[0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
             type=float,
             required=False,
             dest="gaussian_filter",
