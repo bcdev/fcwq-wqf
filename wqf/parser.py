@@ -120,7 +120,7 @@ class Parser:
             "If not specified no filter is applied.",
             type=float,
             required=False,
-            dest="gaussian_filter",
+            dest="fwhm",
         )
         parser.add_argument(
             "--horizon",

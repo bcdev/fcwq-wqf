@@ -90,11 +90,10 @@ will print a detailed usage message to the screen:
       --engine-writer {h5netcdf,netcdf4,zarr}
                             specify the engine used to write the target product
                             file. (default: None)
-      --gaussian-filter GAUSSIAN_FILTER
-                            specify the full width at half maximum (pixels) of
-                            a lateral Gaussian filter applied to the forecast.
-                            If not specified no filter is applied. (default:
-                            None)
+      --gaussian-filter FWHM
+                            specify the full width at half maximum (pixels) of a
+                            lateral Gaussian filter applied to the forecast. If
+                            not specified no filter is applied. (default: None)
       --horizon {1,2,3,4,5,6,7}
                             specify the forecast horizon (days). (default: None)
       --log-level {debug,info,warning,error,off}

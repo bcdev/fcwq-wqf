@@ -65,9 +65,9 @@ class ForecastOp(Operator):
         )
         feats, names = self._features(source)
         array = f.apply_to(*feats, names=names)
-        if self._args.gaussian_filter is not None:
+        if self._args.fwhm is not None:
             g = Gaussian(array.dtype)
-            array = g.apply_to(array, fwhm=self._args.gaussian_filter)
+            array = g.apply_to(array, fwhm=self._args.fwhm)
 
         builder = DatasetBuilder()
         for name, value in sorted(

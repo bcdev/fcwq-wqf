@@ -20,8 +20,8 @@ engine_reader:
 ## Detect the writer engine automatically
 engine_writer:
 
-## No lateral Gaussian filter [0.5, 1.0, 1.5, 2.0, 2.5, 3.0] is applied
-gaussian_filter:
+## No lateral Gaussian filter is applied
+fwhm:
 
 ## The default forecast horizon
 horizon: 1
