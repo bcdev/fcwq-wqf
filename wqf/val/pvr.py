@@ -80,27 +80,27 @@ def plot_bias_diagrams(
         title,
         f"bias_{method}_series_{period.str('_')}",
         xlim=period.lim,
-    )
+    ).clear()
     plot_bias_scene(
         Bias().image(ref, pre),
         title,
         f"bias_{method}_image_{period.str('_')}",
-    )
+    ).clear()
     plot_error_histogram(
         Bias().err(ref, pre),
         title,
         f"err_{method}_hist_{period.str('_')}",
-    )
+    ).clear()
     plot_relative_error_histogram(
         Bias().rer(ref, pre, condition=ref > 1.0),
         title,
         f"rer_{method}_hist_{period.str('_')}",
-    )
+    ).clear()
     plot_count_scene(
         Count().image(ref, pre),
         title,
         f"count_{method}_image_{period.str('_')}",
-    )
+    ).clear()
 
 
 def plot_det_coefficient_diagrams(
@@ -121,12 +121,12 @@ def plot_det_coefficient_diagrams(
         title,
         f"det_{method}_series_{period.str('_')}",
         xlim=period.lim,
-    )
+    ).clear()
     plot_determination_coefficient_scene(
         R2().image(ref, pre),
         title,
         f"det_{method}_image_{period.str('_')}",
-    )
+    ).clear()
 
 
 def plot_mad_diagrams(
@@ -147,12 +147,12 @@ def plot_mad_diagrams(
         title,
         f"mad_{method}_series_{period.str('_')}",
         xlim=period.lim,
-    )
+    ).clear()
     plot_mad_scene(
         MAD().image(ref, pre),
         title,
         f"mad_{method}_image_{period.str('_')}",
-    )
+    ).clear()
 
 
 def plot_mapd_diagrams(
@@ -173,12 +173,12 @@ def plot_mapd_diagrams(
         title,
         f"mapd_{method}_series_{period.str('_')}",
         xlim=period.lim,
-    )
+    ).clear()
     plot_mapd_scene(
         MAPD().image(ref, pre, condition=ref > 1.0),
         title,
         f"mapd_{method}_image_{period.str('_')}",
-    )
+    ).clear()
 
 
 def plot_rmse_diagrams(
@@ -199,12 +199,12 @@ def plot_rmse_diagrams(
         title,
         f"rmse_{method}_series_{period.str('_')}",
         xlim=period.lim,
-    )
+    ).clear()
     plot_rmse_scene(
         RMSE().image(ref, pre),
         title,
         f"rmse_{method}_image_{period.str('_')}",
-    )
+    ).clear()
 
 
 def plot_wrmsse_diagrams(
@@ -225,12 +225,12 @@ def plot_wrmsse_diagrams(
         title,
         f"wrmsse_{method}_series_{period.str('_')}",
         xlim=period.lim,
-    )
+    ).clear()
     plot_wrmsse_scene(
         WRMSSE().image(ref, pre, condition=ref > 1.0),
         title,
         f"wrmsse_{method}_image_{period.str('_')}",
-    )
+    ).clear()
 
 
 def plot_density_diagrams(
@@ -243,32 +243,32 @@ def plot_density_diagrams(
         (x, y),
         f"{method} forecast {period}",
         f"val_{method}_density_{period.str('_')}",
-    )
+    ).clear()
     plot_error_density(
         (x, y - x),
         f"{method} forecast {period}",
         f"err_{method}_density_{period.str('_')}",
-    )
+    ).clear()
     plot_relative_error_density(
         (x, (y - x) / x),
         f"{method} forecast {period}",
         f"rer_{method}_density_{period.str('_')}",
-    )
+    ).clear()
     plot_value_scatter(
         (x, y),
         f"{method} forecast {period}",
         f"val_{method}_scatter_{period.str('_')}",
-    )
+    ).clear()
     plot_error_scatter(
         (x, y - x),
         f"{method} forecast {period}",
         f"err_{method}_scatter_{period.str('_')}",
-    )
+    ).clear()
     plot_relative_error_scatter(
         (x, (y - x) / x),
         f"{method} forecast {period}",
         f"rer_{method}_scatter_{period.str('_')}",
-    )
+    ).clear()
 
 
 def plot_diagnostic_diagrams(ref: DataArray, pre: DataArray, method: str):

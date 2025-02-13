@@ -45,7 +45,7 @@ def plot_analysis(chl: DataArray, period: Period):
             xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
             vmin=0.0,
             vmax=100.0,
-        )
+        ).clear()
 
 
 def plot_forecast(
@@ -76,7 +76,7 @@ def plot_forecast(
             xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
             vmin=0.0,
             vmax=100.0,
-        )
+        ).clear()
 
 
 def plot_observed(chl: DataArray, period: Period, fwhm: Number | None):
@@ -105,7 +105,7 @@ def plot_observed(chl: DataArray, period: Period, fwhm: Number | None):
             xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
             vmin=0.0,
             vmax=100.0,
-        )
+        ).clear()
 
 
 def generate_figures(args):

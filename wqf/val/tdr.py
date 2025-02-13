@@ -40,7 +40,7 @@ def chlorophyll_quantiles():
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
         vmin=1.0,
         vmax=100.0,
-    )
+    ).clear()
     ScenePlot().plot(
         chl_q_hi,
         title="quantile q = 0.995",
@@ -50,7 +50,7 @@ def chlorophyll_quantiles():
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
         vmin=1.0,
         vmax=100.0,
-    )
+    ).clear()
 
 
 def chlorophyll_mean_and_std():
@@ -70,7 +70,7 @@ def chlorophyll_mean_and_std():
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
         vmin=1.0,
         vmax=100.0,
-    )
+    ).clear()
     ScenePlot().plot(
         cube.chl.std(DID_TIM),
         title="standard deviation",
@@ -79,7 +79,7 @@ def chlorophyll_mean_and_std():
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
         vmin=1.0,
         vmax=100.0,
-    )
+    ).clear()
     ScenePlot().plot(
         xr.where(cube.chl < chl_q_hi, cube.chl, np.nan).mean(DID_TIM),
         title="mean",
@@ -89,7 +89,7 @@ def chlorophyll_mean_and_std():
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
         vmin=1.0,
         vmax=100.0,
-    )
+    ).clear()
     ScenePlot().plot(
         xr.where(cube.chl < chl_q_hi, cube.chl, np.nan).std(DID_TIM),
         title="standard deviation",
@@ -99,7 +99,7 @@ def chlorophyll_mean_and_std():
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
         vmin=1.0,
         vmax=100.0,
-    )
+    ).clear()
 
 
 def chlorophyll_variability():
@@ -126,7 +126,7 @@ def chlorophyll_variability():
         hist_range=((40, 310), (0.0, 10)),
         vmin=0.0,
         vmax=6.0,
-    )
+    ).clear()
 
 
 def number_of_chlorophyll_observations_from_space():
@@ -160,7 +160,7 @@ def number_of_chlorophyll_observations_from_space():
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
         vmin=0.1,
         vmax=0.5,
-    )
+    ).clear()
     HistogramPlot().plot(
         cube.chl,
         xlabel=r"chlorophyll concentration (mg m$^{-3}$)",
@@ -171,7 +171,7 @@ def number_of_chlorophyll_observations_from_space():
         bins=25,
         log=True,
         hist_range=(0.0, 100.0),
-    )
+    ).clear()
 
 
 def depth_of_sea_floor():
@@ -195,7 +195,7 @@ def depth_of_sea_floor():
         fn="fig08",
         cbar_label="depth (m)",
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
-    )
+    ).clear()
     DensityPlot().plot(
         (cube.deptho, cube.chl.mean(DID_TIM)),
         xlabel="depth (m)",
@@ -207,7 +207,7 @@ def depth_of_sea_floor():
         density=False,
         hist_range=((0.0, 50.0), (0.0, 50.0)),
         norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    )
+    ).clear()
     DensityPlot().plot(
         (cube.deptho, cube.chl.std(DID_TIM)),
         xlabel="depth (m)",
@@ -219,7 +219,7 @@ def depth_of_sea_floor():
         density=False,
         hist_range=((0.0, 50.0), (0.0, 50.0)),
         norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    )
+    ).clear()
 
 
 def examples_of_statistical_correlations():
@@ -243,7 +243,7 @@ def examples_of_statistical_correlations():
         density=False,
         hist_range=((-0.53, -0.27), (0.0, 50.0)),
         norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    )
+    ).clear()
     DensityPlot().plot(
         (cube.sst.mean(DID_TIM), cube.chl.mean(DID_TIM)),
         xlabel="sea surface temperature (K)",
@@ -255,7 +255,7 @@ def examples_of_statistical_correlations():
         density=False,
         hist_range=((284.0, 289.0), (0.0, 50.0)),
         norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    )
+    ).clear()
     DensityPlot().plot(
         (cube.sst.std(DID_TIM), cube.chl.mean(DID_TIM)),
         xlabel="sea surface temperature (K)",
@@ -267,7 +267,7 @@ def examples_of_statistical_correlations():
         density=False,
         hist_range=((2.0, 7.0), (0.0, 50.0)),
         norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    )
+    ).clear()
     DensityPlot().plot(
         (cube.so.mean(DID_TIM), cube.chl.mean(DID_TIM)),
         xlabel="surface salinity (10-3)",
@@ -279,7 +279,7 @@ def examples_of_statistical_correlations():
         density=False,
         hist_range=((0.0, 50.0), (0.0, 50.0)),
         norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    )
+    ).clear()
     DensityPlot().plot(
         (cube.mlotst.mean(DID_TIM), cube.chl.mean(DID_TIM)),
         xlabel="mixed layer thickness (m)",
@@ -291,7 +291,7 @@ def examples_of_statistical_correlations():
         density=False,
         hist_range=((0.0, 50.0), (0.0, 50.0)),
         norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    )
+    ).clear()
     DensityPlot().plot(
         (cube.mlotst.mean(DID_TIM), cube.deptho),
         xlabel="sea floor depth (m)",
@@ -303,7 +303,7 @@ def examples_of_statistical_correlations():
         density=False,
         hist_range=((0.0, 200.0), (0.0, 50.0)),
         norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    )
+    ).clear()
 
 
 if __name__ == "__main__":

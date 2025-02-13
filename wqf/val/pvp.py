@@ -429,88 +429,88 @@ def generate_figures(args, period: tuple[int, int]):
         "Mockup chlorophyll forecast",
         "bias_mockup_series",
         xlim=period,
-    )
+    ).clear()
     plot_bias_scene(
         Bias().image(ref, pre),
         "Mockup chlorophyll forecast",
         "bias_mockup_image",
-    )
+    ).clear()
     plot_error_histogram(
         Bias.err(ref, pre),
         "Mockup chlorophyll forecast",
         "err_mockup_hist",
-    )
+    ).clear()
     plot_relative_error_histogram(
         Bias.rer(ref, pre, condition=ref > 1.0),
         "Mockup chlorophyll forecast",
         "rer_mockup_hist",
-    )
+    ).clear()
 
     plot_count_scene(
         Count().image(ref, pre),
         "Mockup chlorophyll forecast",
         "count_mockup_image",
-    )
+    ).clear()
 
     plot_determination_coefficient_time_series(
         R2().series(ref, pre),
         "Mockup chlorophyll forecast",
         "det_mockup_series",
         xlim=period,
-    )
+    ).clear()
     plot_determination_coefficient_scene(
         R2().image(ref, pre),
         "Mockup chlorophyll forecast",
         "det_mockup_image",
-    )
+    ).clear()
 
     plot_mad_time_series(
         MAD().series(ref, pre),
         "Mockup chlorophyll forecast",
         "mad_mockup_series",
         xlim=period,
-    )
+    ).clear()
     plot_mad_scene(
         MAD().image(ref, pre),
         "Mockup chlorophyll forecast",
         "mad_mockup_image",
-    )
+    ).clear()
 
     plot_mapd_time_series(
         MAPD().series(ref, pre, condition=ref > 1.0),
         "Mockup chlorophyll forecast",
         "mapd_mockup_series",
         xlim=period,
-    )
+    ).clear()
     plot_mapd_scene(
         MAPD().image(ref, pre, condition=ref > 1.0),
         "Mockup chlorophyll forecast",
         "mapd_mockup_image",
-    )
+    ).clear()
 
     plot_rmse_time_series(
         RMSE().series(ref, pre),
         "Mockup chlorophyll forecast",
         "rmse_mockup_series",
         xlim=period,
-    )
+    ).clear()
     plot_rmse_scene(
         RMSE().image(ref, pre),
         "Mockup chlorophyll forecast",
         "rmse_mockup_image",
-    )
+    ).clear()
 
     plot_wrmsse_time_series(
         WRMSSE().series(ref, pre, condition=ref > 1.0),
         "Mockup chlorophyll forecast",
         "wrmsse_mockup_series",
         xlim=period,
-    )
+    ).clear()
     plot_wrmsse_scene(
         WRMSSE().image(ref, pre, condition=ref > 1.0),
         "Mockup chlorophyll forecast",
         "wrmsse_mockup_image",
-    )
+    ).clear()
 
     x = ref.loc[f"{period[0]}-01-01" :f"{period[1]}-01-01", :, :]
     y = pre.loc[f"{period[0]}-01-01" :f"{period[1]}-01-01", :, :]
@@ -519,32 +519,32 @@ def generate_figures(args, period: tuple[int, int]):
         (x, y),
         "Mockup chlorophyll forecast",
         "val_mockup_density",
-    )
+    ).clear()
     plot_value_scatter(
         (x, y),
         "Mockup chlorophyll forecast",
         "val_mockup_scatter",
-    )
+    ).clear()
     plot_error_density(
         (x, y - x),
         "Mockup chlorophyll forecast",
         "err_mockup_density",
-    )
+    ).clear()
     plot_error_scatter(
         (x, y - x),
         "Mockup chlorophyll forecast",
         "err_mockup_scatter",
-    )
+    ).clear()
     plot_relative_error_density(
         (x, (y - x) / x),
         "Mockup chlorophyll forecast",
         "rer_mockup_density",
-    )
+    ).clear()
     plot_relative_error_scatter(
         (x, (y - x) / x),
         "Mockup chlorophyll forecast",
         "rer_mockup_scatter",
-    )
+    ).clear()
 
 
 if __name__ == "__main__":
