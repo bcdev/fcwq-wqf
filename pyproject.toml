@@ -71,7 +71,8 @@ lint = [
 wqf = "wqf.main.main:main"
 
 [project.urls]
-Repository = "https://github.com/bcdev/fcwq-wqf"
+Homepage = "https://bcdev.github.io/fcwq-wqf/"
+Repository = "https://github.com/bcdev/fcwq-wqf/"
 
 [tool.black]
 line-length = 78
