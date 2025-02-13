@@ -119,7 +119,7 @@ def generate_figures(args):
     ref.close()
     obs.close()
 
-    if not args.no_analysis:
+    if args.analysis:
         obs = reader.read(args.cube_id, depth_level=3.0)
         ref, pre = BGC(args).predict(obs)
         plot_analysis(pre, period=period)
