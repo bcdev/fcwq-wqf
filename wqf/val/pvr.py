@@ -25,11 +25,13 @@ from wqf.val.metrics import MAD
 from wqf.val.metrics import MAPD
 from wqf.val.metrics import R2
 from wqf.val.metrics import RMSE
+from wqf.val.metrics import RMSLE
 from wqf.val.metrics import WRMSSE
 from wqf.val.period import Period
 from wqf.val.pvp import plot_bias_scene
 from wqf.val.pvp import plot_bias_time_series
 from wqf.val.pvp import plot_count_scene
+from wqf.val.pvp import plot_count_time_series
 from wqf.val.pvp import plot_determination_coefficient_scene
 from wqf.val.pvp import plot_determination_coefficient_time_series
 from wqf.val.pvp import plot_error_density
@@ -44,6 +46,8 @@ from wqf.val.pvp import plot_relative_error_histogram
 from wqf.val.pvp import plot_relative_error_scatter
 from wqf.val.pvp import plot_rmse_scene
 from wqf.val.pvp import plot_rmse_time_series
+from wqf.val.pvp import plot_rmsle_scene
+from wqf.val.pvp import plot_rmsle_time_series
 from wqf.val.pvp import plot_value_density
 from wqf.val.pvp import plot_value_scatter
 from wqf.val.pvp import plot_wrmsse_scene
@@ -74,7 +78,7 @@ def plot_bias_diagrams(
     value = Count().value(ref, pre)
     print(f"Count ............. ({method}) {period}: {value}", flush=True)
 
-    title = f"{method} forecast {period}"
+    title = _title(method, period)
     plot_bias_time_series(
         Bias().series(ref, pre),
         title,
@@ -96,11 +100,29 @@ def plot_bias_diagrams(
         title,
         f"rer_{method}_hist_{period.str('_')}",
     ).clear()
+    # noinspection PyTypeChecker
+    plot_count_time_series(
+        Count().series(ref, pre) / 1000.0,
+        title,
+        f"count_{method}_series_{period.str('_')}",
+        xlim=period.lim,
+    ).clear()
     plot_count_scene(
         Count().image(ref, pre),
         title,
         f"count_{method}_image_{period.str('_')}",
     ).clear()
+
+
+def _title(method: str, period: Period) -> str:
+    method = method.split(":")
+    if len(method) == 2:
+        title = f"{method[0]} forecast {period} [{method[1]}]"
+    else:
+        title = f"{method[0]} forecast {period}"
+    if title.startswith("XGB"):
+        title = f"{title[3:4]}-day {title[5:]}"
+    return title
 
 
 def plot_det_coefficient_diagrams(
@@ -115,7 +137,7 @@ def plot_det_coefficient_diagrams(
         flush=True,
     )
 
-    title = f"{method} forecast {period}"
+    title = _title(method, period)
     plot_determination_coefficient_time_series(
         R2().series(ref, pre),
         title,
@@ -141,7 +163,7 @@ def plot_mad_diagrams(
         flush=True,
     )
 
-    title = f"{method} forecast {period}"
+    title = _title(method, period)
     plot_mad_time_series(
         MAD().series(ref, pre),
         title,
@@ -167,7 +189,7 @@ def plot_mapd_diagrams(
         flush=True,
     )
 
-    title = f"{method} forecast {period}"
+    title = _title(method, period)
     plot_mapd_time_series(
         MAPD().series(ref, pre, condition=ref > 1.0),
         title,
@@ -193,7 +215,9 @@ def plot_rmse_diagrams(
         flush=True,
     )
 
-    title = f"{method} forecast {period}"
+    title = _title(method, period)
+    if title.startswith("XGB"):
+        title = f"{title[3:4]}-day {title[4:]}"
     plot_rmse_time_series(
         RMSE().series(ref, pre),
         title,
@@ -207,27 +231,55 @@ def plot_rmse_diagrams(
     ).clear()
 
 
+def plot_rmsle_diagrams(
+    ref: DataArray, pre: DataArray, method: str, period: Period
+):
+    ref = period.slice(ref)
+    pre = period.slice(pre)
+
+    value = RMSLE().value(ref, pre)
+    print(
+        f"RMSLE ............. ({method}) {period}: {value:6.2f}",
+        flush=True,
+    )
+
+    title = _title(method, period)
+    if title.startswith("XGB"):
+        title = f"{title[3:4]}-day {title[4:]}"
+    plot_rmsle_time_series(
+        RMSLE().series(ref, pre),
+        title,
+        f"rmsle_{method}_series_{period.str('_')}",
+        xlim=period.lim,
+    ).clear()
+    plot_rmsle_scene(
+        RMSLE().image(ref, pre),
+        title,
+        f"rmsle_{method}_image_{period.str('_')}",
+    ).clear()
+
+
 def plot_wrmsse_diagrams(
     ref: DataArray, pre: DataArray, method: str, period: Period
 ):
     ref = period.slice(ref)
     pre = period.slice(pre)
 
-    value = WRMSSE().value(ref, pre, condition=ref > 1.0)
+    value = WRMSSE().value(ref, pre)
     print(
         f"WRMSSE ............ ({method}) {period}: {value:6.2f}",
         flush=True,
     )
 
-    title = f"{method} forecast {period}"
+    title = _title(method, period)
     plot_wrmsse_time_series(
-        WRMSSE().series(ref, pre, condition=ref > 1.0),
+        WRMSSE().series(ref, pre),
         title,
         f"wrmsse_{method}_series_{period.str('_')}",
         xlim=period.lim,
     ).clear()
     plot_wrmsse_scene(
-        WRMSSE().image(ref, pre, condition=ref > 1.0),
+        WRMSSE().image(ref, pre),
         title,
         f"wrmsse_{method}_image_{period.str('_')}",
     ).clear()
@@ -239,59 +291,63 @@ def plot_density_diagrams(
     x = period.slice(ref)
     y = period.slice(pre)
 
+    title = _title(method, period)
     plot_value_density(
         (x, y),
-        f"{method} forecast {period}",
+        title,
         f"val_{method}_density_{period.str('_')}",
     ).clear()
     plot_error_density(
         (x, y - x),
-        f"{method} forecast {period}",
+        title,
         f"err_{method}_density_{period.str('_')}",
     ).clear()
     plot_relative_error_density(
         (x, (y - x) / x),
-        f"{method} forecast {period}",
+        title,
         f"rer_{method}_density_{period.str('_')}",
     ).clear()
     plot_value_scatter(
         (x, y),
-        f"{method} forecast {period}",
+        title,
         f"val_{method}_scatter_{period.str('_')}",
     ).clear()
     plot_error_scatter(
         (x, y - x),
-        f"{method} forecast {period}",
+        title,
         f"err_{method}_scatter_{period.str('_')}",
     ).clear()
     plot_relative_error_scatter(
         (x, (y - x) / x),
-        f"{method} forecast {period}",
+        title,
         f"rer_{method}_scatter_{period.str('_')}",
     ).clear()
 
 
 def plot_diagnostic_diagrams(ref: DataArray, pre: DataArray, method: str):
-    plot_bias_diagrams(ref, pre, method, Period(2016, 2019))
-    plot_bias_diagrams(ref, pre, method, Period(2020))
+    # plot_bias_diagrams(ref, pre, method, Period(2016, 2019))
+    # plot_bias_diagrams(ref, pre, method, Period(2020))
+    #
+    # plot_det_coefficient_diagrams(ref, pre, method, Period(2016, 2019))
+    # plot_det_coefficient_diagrams(ref, pre, method, Period(2020))
+    #
+    # plot_mad_diagrams(ref, pre, method, Period(2016, 2019))
+    # plot_mad_diagrams(ref, pre, method, Period(2020))
+    #
+    # plot_mapd_diagrams(ref, pre, method, Period(2016, 2019))
+    # plot_mapd_diagrams(ref, pre, method, Period(2020))
 
-    plot_det_coefficient_diagrams(ref, pre, method, Period(2016, 2019))
-    plot_det_coefficient_diagrams(ref, pre, method, Period(2020))
+    # plot_rmse_diagrams(ref, pre, method, Period(2016, 2019))
+    # plot_rmse_diagrams(ref, pre, method, Period(2020))
 
-    plot_mad_diagrams(ref, pre, method, Period(2016, 2019))
-    plot_mad_diagrams(ref, pre, method, Period(2020))
-
-    plot_mapd_diagrams(ref, pre, method, Period(2016, 2019))
-    plot_mapd_diagrams(ref, pre, method, Period(2020))
-
-    plot_rmse_diagrams(ref, pre, method, Period(2016, 2019))
-    plot_rmse_diagrams(ref, pre, method, Period(2020))
-
+    # plot_rmsle_diagrams(ref, pre, method, Period(2016, 2019))
+    # plot_rmsle_diagrams(ref, pre, method, Period(2020))
+    #
     plot_wrmsse_diagrams(ref, pre, method, Period(2016, 2019))
     plot_wrmsse_diagrams(ref, pre, method, Period(2020))
 
-    plot_density_diagrams(ref, pre, method, Period(2016, 2019))
-    plot_density_diagrams(ref, pre, method, Period(2020))
+#    plot_density_diagrams(ref, pre, method, Period(2016, 2019))
+#    plot_density_diagrams(ref, pre, method, Period(2020))
 
 
 def generate_figures(args):
