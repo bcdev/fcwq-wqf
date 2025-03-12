@@ -8,6 +8,7 @@ import warnings
 from argparse import ArgumentDefaultsHelpFormatter
 from argparse import ArgumentParser
 
+import dask.array as da
 import numpy as np
 import xarray as xr
 from matplotlib import colors as plc
@@ -16,6 +17,7 @@ from wqf.interface.constants import DID_LAT
 from wqf.interface.constants import DID_LON
 from wqf.interface.constants import DID_TIM
 from wqf.readerfactory import ReaderFactory
+from wqf.val.period import Period
 from wqf.val.plots import DensityPlot
 from wqf.val.plots import HistogramPlot
 from wqf.val.plots import ScenePlot
@@ -33,22 +35,22 @@ def chlorophyll_quantiles():
     """
     ScenePlot().plot(
         chl_q_lo,
-        title="quantile q = 0.005",
+        title="Observations 2016 - 2020",
         fn="fig01",
-        cbar_label=r"chlorophyll concentration (mg m$^{-3}$)",
+        cbar_label=r"quantile $0.01$ of chlorophyll concentration (mg m$^{-3}$)",
         norm=plc.LogNorm(),
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
-        vmin=1.0,
+        vmin=0.1,
         vmax=100.0,
     ).clear()
     ScenePlot().plot(
         chl_q_hi,
-        title="quantile q = 0.995",
+        title="Observations 2016 - 2020",
         fn="fig02",
-        cbar_label=r"chlorophyll concentration (mg m$^{-3}$)",
+        cbar_label=r"quantile $0.99$ of chlorophyll concentration (mg m$^{-3}$)",
         norm=plc.LogNorm(),
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
-        vmin=1.0,
+        vmin=0.1,
         vmax=100.0,
     ).clear()
 
@@ -62,42 +64,75 @@ def chlorophyll_mean_and_std():
     rid of cloud contamination, if we excluded the upper percentile of
     chlorophyll concentration values.
     """
+    trn = Period(2016, 2019).slice(cube.chl)
+    val = Period(2020, 2020).slice(cube.chl)
+
     ScenePlot().plot(
-        cube.chl.mean(DID_TIM),
-        title="mean",
-        cbar_label=r"chlorophyll concentration (mg m$^{-3}$)",
+        xr.where(trn < chl_q_hi, trn, np.nan).mean(DID_TIM),
+        title="Observations 2016 - 2019",
+        fn="fig03a",
+        cbar_label=r"mean chlorophyll concentration (mg m$^{-3}$)",
         norm=plc.LogNorm(),
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
-        vmin=1.0,
+        vmin=0.1,
         vmax=100.0,
     ).clear()
     ScenePlot().plot(
-        cube.chl.std(DID_TIM),
-        title="standard deviation",
-        cbar_label=r"chlorophyll concentration (mg m$^{-3}$)",
+        xr.where(val < chl_q_hi, val, np.nan).mean(DID_TIM),
+        title="Observations 2020",
+        fn="fig03b",
+        cbar_label=r"mean chlorophyll concentration (mg m$^{-3}$)",
         norm=plc.LogNorm(),
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
-        vmin=1.0,
+        vmin=0.1,
         vmax=100.0,
     ).clear()
+    std = xr.where(trn < chl_q_hi, trn, np.nan).std(DID_TIM)
     ScenePlot().plot(
-        xr.where(cube.chl < chl_q_hi, cube.chl, np.nan).mean(DID_TIM),
-        title="mean",
-        fn="fig03",
-        cbar_label=r"chlorophyll concentration (mg m$^{-3}$)",
+        std,
+        title="Observations 2016 - 2019",
+        fn="fig04a",
+        cbar_label=r"std. dev. chlorophyll concentration (mg m$^{-3}$)",
         norm=plc.LogNorm(),
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
-        vmin=1.0,
+        vmin=0.1,
         vmax=100.0,
     ).clear()
+    std = xr.where(val < chl_q_hi, val, np.nan).std(DID_TIM)
     ScenePlot().plot(
-        xr.where(cube.chl < chl_q_hi, cube.chl, np.nan).std(DID_TIM),
-        title="standard deviation",
-        fn="fig04",
-        cbar_label=r"chlorophyll concentration (mg m$^{-3}$)",
+        std,
+        title="Observations 2020",
+        fn="fig04b",
+        cbar_label=r"std. dev. chlorophyll concentration (mg m$^{-3}$)",
         norm=plc.LogNorm(),
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
-        vmin=1.0,
+        vmin=0.1,
+        vmax=100.0,
+    ).clear()
+    dev = da.sqrt(0.5 * da.square(
+        xr.where(trn < chl_q_hi, trn, np.nan).diff(DID_TIM)).mean(
+        DID_TIM))
+    ScenePlot().plot(
+        dev,
+        title="Observations 2016 - 2020",
+        fn="fig05a",
+        cbar_label=r"Allan dev. chlorophyll concentration (mg m$^{-3}$)",
+        norm=plc.LogNorm(),
+        xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
+        vmin=0.1,
+        vmax=100.0,
+    ).clear()
+    dev = da.sqrt(0.5 * da.square(
+        xr.where(val < chl_q_hi, val, np.nan).diff(DID_TIM)).mean(
+        DID_TIM))
+    ScenePlot().plot(
+        dev,
+        title="Observations 2020",
+        fn="fig05b",
+        cbar_label=r"Allan dev. chlorophyll concentration (mg m$^{-3}$)",
+        norm=plc.LogNorm(),
+        xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
+        vmin=0.1,
         vmax=100.0,
     ).clear()
 
@@ -117,9 +152,8 @@ def chlorophyll_variability():
             ),
         ),
         xlabel="day of year",
-        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
-        title="mean CHL vs day of year",
-        fn="fig05",
+        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        fn="fig08",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
@@ -149,25 +183,37 @@ def number_of_chlorophyll_observations_from_space():
     chlorophyll concentration can be well described by an exponential
     distribution with a mean value of about 1.0 mg m-3.
     """
-    chl_count = cube.chl.count(dim="time") / cube.chl.shape[0]
-    chl_count = xr.where(chl_count == 0, np.nan, 1.0 * chl_count)
+    trn = Period(2016, 2019).slice(cube.chl)
+    val = Period(2020, 2020).slice(cube.chl)
+    trn_count = trn.count(dim="time") / trn.shape[0]
+    trn_count = xr.where(trn_count == 0, np.nan, 1.0 * trn_count)
+    val_count = val.count(dim="time") / val.shape[0]
+    val_count = xr.where(val_count == 0, np.nan, 1.0 * val_count)
 
     ScenePlot().plot(
-        chl_count,
-        title="number of observations",
-        fn="fig06",
-        cbar_label=r"number of observations (day$^{-1}$)",
+        trn_count,
+        title="Observations 2016 - 2019",
+        fn="fig09a",
+        cbar_label=r"frequency of observations (day$^{-1}$)",
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
-        vmin=0.1,
-        vmax=0.5,
+        vmin=0.0,
+        vmax=1.0,
+    ).clear()
+    ScenePlot().plot(
+        val_count,
+        title="Observations 2020",
+        fn="fig09b",
+        cbar_label=r"frequency of observations (day$^{-1}$)",
+        xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
+        vmin=0.0,
+        vmax=1.0,
     ).clear()
     HistogramPlot().plot(
         cube.chl,
         xlabel=r"chlorophyll concentration (mg m$^{-3}$)",
         ylabel="number count",
         ylim=(100, 100000000),
-        title="number distribution",
-        fn="fig07",
+        fn="fig10",
         bins=25,
         log=True,
         hist_range=(0.0, 100.0),
@@ -191,17 +237,15 @@ def depth_of_sea_floor():
     """
     ScenePlot().plot(
         cube.deptho,
-        title="sea floor depth",
-        fn="fig08",
-        cbar_label="depth (m)",
+        fn="fig11",
+        cbar_label="sea floor depth below geoid (m)",
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
     ).clear()
     DensityPlot().plot(
         (cube.deptho, cube.chl.mean(DID_TIM)),
-        xlabel="depth (m)",
-        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
-        title="mean CHL vs sea floor depth",
-        fn="fig09",
+        xlabel="sea floor depth below geoid (m)",
+        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        fn="fig12",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
@@ -210,10 +254,9 @@ def depth_of_sea_floor():
     ).clear()
     DensityPlot().plot(
         (cube.deptho, cube.chl.std(DID_TIM)),
-        xlabel="depth (m)",
-        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
-        title="standard deviation CHL vs sea floor depth",
-        fn="fig10",
+        xlabel="sea floor depth below geoid (m)",
+        ylabel=r"std. dev. of chlorophyll concentration (mg m$^{-3}$)",
+        fn="fig13",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
@@ -235,9 +278,8 @@ def examples_of_statistical_correlations():
     DensityPlot().plot(
         (cube.mdt, cube.chl.mean(DID_TIM)),
         xlabel="mean dynamic topography (m)",
-        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
-        title="mean CHL vs mean dynamic topography",
-        fn="fig11",
+        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        fn="fig14",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
@@ -247,9 +289,8 @@ def examples_of_statistical_correlations():
     DensityPlot().plot(
         (cube.sst.mean(DID_TIM), cube.chl.mean(DID_TIM)),
         xlabel="sea surface temperature (K)",
-        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
-        title="mean CHL vs mean SST",
-        fn="fig12",
+        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        fn="fig15",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
@@ -259,9 +300,8 @@ def examples_of_statistical_correlations():
     DensityPlot().plot(
         (cube.sst.std(DID_TIM), cube.chl.mean(DID_TIM)),
         xlabel="sea surface temperature (K)",
-        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
-        title="mean CHL vs standard deviation SST",
-        fn="fig13",
+        ylabel=r"std. dev. of chlorophyll concentration (mg m$^{-3}$)",
+        fn="fig16",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
@@ -271,9 +311,8 @@ def examples_of_statistical_correlations():
     DensityPlot().plot(
         (cube.so.mean(DID_TIM), cube.chl.mean(DID_TIM)),
         xlabel="surface salinity (10-3)",
-        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
-        title="mean CHL vs mean surface salinity",
-        fn="fig14",
+        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        fn="fig17",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
@@ -283,9 +322,8 @@ def examples_of_statistical_correlations():
     DensityPlot().plot(
         (cube.mlotst.mean(DID_TIM), cube.chl.mean(DID_TIM)),
         xlabel="mixed layer thickness (m)",
-        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
-        title="mean CHL vs mean mixed layer thickness",
-        fn="fig15",
+        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        fn="fig18",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
@@ -294,10 +332,9 @@ def examples_of_statistical_correlations():
     ).clear()
     DensityPlot().plot(
         (cube.mlotst.mean(DID_TIM), cube.deptho),
-        xlabel="sea floor depth (m)",
+        xlabel="sea floor depth below geoid  (m)",
         ylabel="mixed layer thickness (m)",
-        title="mean mixed layer thickness vs sea floor depth",
-        fn="fig16",
+        fn="fig19",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
