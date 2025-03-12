@@ -325,29 +325,29 @@ def plot_density_diagrams(
 
 
 def plot_diagnostic_diagrams(ref: DataArray, pre: DataArray, method: str):
-    # plot_bias_diagrams(ref, pre, method, Period(2016, 2019))
-    # plot_bias_diagrams(ref, pre, method, Period(2020))
-    #
-    # plot_det_coefficient_diagrams(ref, pre, method, Period(2016, 2019))
-    # plot_det_coefficient_diagrams(ref, pre, method, Period(2020))
-    #
-    # plot_mad_diagrams(ref, pre, method, Period(2016, 2019))
-    # plot_mad_diagrams(ref, pre, method, Period(2020))
-    #
-    # plot_mapd_diagrams(ref, pre, method, Period(2016, 2019))
-    # plot_mapd_diagrams(ref, pre, method, Period(2020))
+    plot_bias_diagrams(ref, pre, method, Period(2016, 2019))
+    plot_bias_diagrams(ref, pre, method, Period(2020))
 
-    # plot_rmse_diagrams(ref, pre, method, Period(2016, 2019))
-    # plot_rmse_diagrams(ref, pre, method, Period(2020))
+    plot_det_coefficient_diagrams(ref, pre, method, Period(2016, 2019))
+    plot_det_coefficient_diagrams(ref, pre, method, Period(2020))
 
-    # plot_rmsle_diagrams(ref, pre, method, Period(2016, 2019))
-    # plot_rmsle_diagrams(ref, pre, method, Period(2020))
-    #
+    plot_mad_diagrams(ref, pre, method, Period(2016, 2019))
+    plot_mad_diagrams(ref, pre, method, Period(2020))
+
+    plot_mapd_diagrams(ref, pre, method, Period(2016, 2019))
+    plot_mapd_diagrams(ref, pre, method, Period(2020))
+
+    plot_rmse_diagrams(ref, pre, method, Period(2016, 2019))
+    plot_rmse_diagrams(ref, pre, method, Period(2020))
+
+    plot_rmsle_diagrams(ref, pre, method, Period(2016, 2019))
+    plot_rmsle_diagrams(ref, pre, method, Period(2020))
+
     plot_wrmsse_diagrams(ref, pre, method, Period(2016, 2019))
     plot_wrmsse_diagrams(ref, pre, method, Period(2020))
 
-#    plot_density_diagrams(ref, pre, method, Period(2016, 2019))
-#    plot_density_diagrams(ref, pre, method, Period(2020))
+    plot_density_diagrams(ref, pre, method, Period(2016, 2019))
+    plot_density_diagrams(ref, pre, method, Period(2020))
 
 
 def generate_figures(args):

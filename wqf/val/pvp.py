@@ -24,6 +24,7 @@ from wqf.val.metrics import MAD
 from wqf.val.metrics import MAPD
 from wqf.val.metrics import R2
 from wqf.val.metrics import RMSE
+from wqf.val.metrics import RMSLE
 from wqf.val.metrics import WRMSSE
 from wqf.val.plots import DensityPlot
 from wqf.val.plots import HistogramPlot
@@ -82,10 +83,34 @@ def plot_count_scene(
         data,
         title=title,
         fn=fn,
-        cbar_label="number of forecasts",
+        cbar_label="number of observations",
         vmin=0.0,
         vmax=250.0,
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
+    )
+
+
+def plot_count_time_series(
+    data: DataArray,
+    title: str | None = None,
+    fn: str | None = None,
+    xlim: tuple[int, int] | None = None,
+    ylim: tuple[Any, Any] = (0.0, 150),
+) -> Figure:
+    return TimeSeriesPlot().plot(
+        data,
+        ylabel=r"number of observations ($10^3$)",
+        xlim=(
+            (
+                np.datetime64(f"{xlim[0]}-01-01"),
+                np.datetime64(f"{xlim[1]}-01-01"),
+            )
+            if xlim is not None
+            else None
+        ),
+        ylim=ylim,
+        title=title,
+        fn=fn,
     )
 
 
@@ -241,6 +266,44 @@ def plot_rmse_time_series(
     )
 
 
+def plot_rmsle_scene(
+    data: DataArray, title: str | None = None, fn: str | None = None
+) -> Figure:
+    return ScenePlot().plot(
+        data,
+        title=title,
+        fn=fn,
+        cbar_label="RMSLE",
+        vmin=0.0,
+        vmax=1.0,
+        xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
+    )
+
+
+def plot_rmsle_time_series(
+    data: DataArray,
+    title: str | None = None,
+    fn: str | None = None,
+    xlim: tuple[int, int] | None = None,
+    ylim: tuple[Any, Any] = (0.0, 1.0),
+) -> Figure:
+    return TimeSeriesPlot().plot(
+        data,
+        ylabel="RMSLE",
+        xlim=(
+            (
+                np.datetime64(f"{xlim[0]}-01-01"),
+                np.datetime64(f"{xlim[1]}-01-01"),
+            )
+            if xlim is not None
+            else None
+        ),
+        ylim=ylim,
+        title=title,
+        fn=fn,
+    )
+
+
 def plot_wrmsse_scene(
     data: DataArray, title: str | None = None, fn: str | None = None
 ) -> Figure:
@@ -286,7 +349,7 @@ def plot_value_density(
 ) -> Figure:
     return DensityPlot().plot(
         data,
-        xlabel=r"reference chlorophyll concentration (mg m$^{-3}$)",
+        xlabel=r"observed chlorophyll concentration (mg m$^{-3}$)",
         ylabel=r"forecast (mg m$^{-3}$)",
         title=title,
         fn=fn,
@@ -304,7 +367,7 @@ def plot_value_scatter(
 ) -> Figure:
     return ScatterPlot().plot(
         data,
-        xlabel=r"reference chlorophyll concentration (mg m$^{-3}$)",
+        xlabel=r"observed chlorophyll concentration (mg m$^{-3}$)",
         ylabel=r"forecast (mg m$^{-3}$)",
         xlim=(-0.50, 30.5),
         ylim=(-0.50, 30.5),
@@ -320,7 +383,7 @@ def plot_error_density(
 ) -> Figure:
     return DensityPlot().plot(
         data,
-        xlabel=r"reference chlorophyll concentration (mg m$^{-3}$)",
+        xlabel=r"observed chlorophyll concentration (mg m$^{-3}$)",
         ylabel=r"forecast error (mg m$^{-3}$)",
         title=title,
         fn=fn,
@@ -338,7 +401,7 @@ def plot_error_scatter(
 ) -> Figure:
     return ScatterPlot().plot(
         data,
-        xlabel=r"reference chlorophyll concentration (mg m$^{-3}$)",
+        xlabel=r"observed chlorophyll concentration (mg m$^{-3}$)",
         ylabel=r"forecast error (mg m$^{-3}$)",
         xlim=(-0.50, 30.5),
         ylim=(-15.5, 15.5),
@@ -372,7 +435,7 @@ def plot_relative_error_density(
 ) -> Figure:
     return DensityPlot().plot(
         data,
-        xlabel=r"reference chlorophyll concentration (mg m$^{-3}$)",
+        xlabel=r"observed chlorophyll concentration (mg m$^{-3}$)",
         ylabel="forecast relative error",
         title=title,
         fn=fn,
@@ -390,7 +453,7 @@ def plot_relative_error_scatter(
 ) -> Figure:
     return ScatterPlot().plot(
         data,
-        xlabel="reference chlorophyll concentration (mg m$^{-3}$)",
+        xlabel="observed chlorophyll concentration (mg m$^{-3}$)",
         ylabel="forecast relative error",
         xlim=(-0.50, 30.5),
         ylim=(-1.55, 1.55),
@@ -446,6 +509,13 @@ def generate_figures(args, period: tuple[int, int]):
         "rer_mockup_hist",
     ).clear()
 
+    # noinspection PyTypeChecker
+    plot_count_time_series(
+        Count().series(ref, pre) / 1000.0,
+        "Mockup chlorophyll forecast",
+        "count_mockup_series",
+        xlim=period,
+    ).clear()
     plot_count_scene(
         Count().image(ref, pre),
         "Mockup chlorophyll forecast",
@@ -500,14 +570,26 @@ def generate_figures(args, period: tuple[int, int]):
         "rmse_mockup_image",
     ).clear()
 
+    plot_rmsle_time_series(
+        RMSLE().series(ref, pre),
+        "Mockup chlorophyll forecast",
+        "rmsle_mockup_series",
+        xlim=period,
+    ).clear()
+    plot_rmsle_scene(
+        RMSLE().image(ref, pre),
+        "Mockup chlorophyll forecast",
+        "rmsle_mockup_image",
+    ).clear()
+
     plot_wrmsse_time_series(
-        WRMSSE().series(ref, pre, condition=ref > 1.0),
+        WRMSSE().series(ref, pre),
         "Mockup chlorophyll forecast",
         "wrmsse_mockup_series",
         xlim=period,
     ).clear()
     plot_wrmsse_scene(
-        WRMSSE().image(ref, pre, condition=ref > 1.0),
+        WRMSSE().image(ref, pre),
         "Mockup chlorophyll forecast",
         "wrmsse_mockup_image",
     ).clear()
