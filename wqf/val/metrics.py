@@ -58,7 +58,7 @@ class Bias(Metric):
     ) -> DataArray:
         """Returns the relative error."""
         ref, pre = _select(ref, pre, condition)
-        return Bias.err(pre, ref) / ref
+        return Bias.err(ref, pre) / ref
 
 
 class Count(Metric):
@@ -210,6 +210,29 @@ class RMSE(Metric):
     def se(ref: DataArray, pre: DataArray) -> DataArray:
         """Returns the squared error."""
         return da.square(ref - pre.data)
+
+
+class RMSLE(Metric):
+    """
+    The root mean squared logarithmic error (RMSLE).
+
+    The RMSLE asymptotically approaches the RMSE for values smaller
+    than unity and the MAPD for values larger than unity.
+    """
+
+    def value(self, ref: DataArray, pre: DataArray, **kwargs) -> Number:
+        return da.sqrt(RMSLE.sle(ref, pre).mean()).values.item()
+
+    def image(self, ref: DataArray, pre: DataArray, **kwargs) -> DataArray:
+        return da.sqrt(RMSLE.sle(ref, pre).mean(DID_TIM))
+
+    def series(self, ref: DataArray, pre: DataArray, **kwargs) -> DataArray:
+        return da.sqrt(RMSLE.sle(ref, pre).mean([DID_LAT, DID_LON]))
+
+    @staticmethod
+    def sle(ref: DataArray, pre: DataArray) -> DataArray:
+        """Returns the squared logarithmic error."""
+        return da.square(da.log1p(ref) - da.log1p(pre.data))
 
 
 class WRMSSE(Metric):
