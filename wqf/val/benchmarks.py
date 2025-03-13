@@ -89,17 +89,15 @@ class SNaive(Benchmark):
         """
 
         def ker(x: Array, **kwargs) -> Array:
-            """The kernel function"""
+            """Returns the most recent value."""
             y = x[..., n - 1]
             for i in range(1, n):
                 y = da.where(da.isfinite(y), y, x[..., n - i - 1])
             return y
 
         ref: DataArray = chl[n + h - 1 :]
-        pre: DataArray = (
-            chl[: 1 - n - h].rolling({DID_TIM: n}, min_periods=1).reduce(ker)
-        )
-        return align(ref, pre, min_pixels)
+        pre: DataArray = chl.rolling({DID_TIM: n}, min_periods=1).reduce(ker)
+        return align(ref, pre[n - 1 : -h], min_pixels)
 
 
 class MA(Benchmark):
@@ -117,12 +115,15 @@ class MA(Benchmark):
         :param n: The forecast history.
         :return: The observed values and corresponding forecast values.
         """
-        ref: DataArray = chl[n + h - 1 :]
-        pre: DataArray = (
-            chl[: 1 - n - h].rolling({DID_TIM: n}, min_periods=n).mean()
-        )
 
-        return align(ref, pre, min_pixels)
+        def ker(x: Array, **kwargs) -> DataArray:
+            """Returns the mean value."""
+            return da.mean(x, axis=-1)
+
+        ref: DataArray = chl[n + h - 1 :]
+        pre: DataArray = chl.rolling({DID_TIM: n}, min_periods=n).reduce(ker)
+
+        return align(ref, pre[n - 1 : -h], min_pixels)
 
 
 class SES(Benchmark):
@@ -156,10 +157,8 @@ class SES(Benchmark):
             return y
 
         ref: DataArray = chl[n + h - 1 :]
-        pre: DataArray = (
-            chl[: 1 - n - h].rolling({DID_TIM: n}, min_periods=n).reduce(ker)
-        )
-        return align(ref, pre, min_pixels)
+        pre: DataArray = chl.rolling({DID_TIM: n}, min_periods=n).reduce(ker)
+        return align(ref, pre[n - 1 : -h], min_pixels)
 
 
 class XGB(Benchmark):
