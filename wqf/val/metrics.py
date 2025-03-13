@@ -8,6 +8,7 @@ described in the Product Validation Plan.
 from numbers import Number
 
 import dask.array as da
+from dask.array import Array
 import numpy as np
 from xarray import DataArray
 
@@ -293,16 +294,19 @@ class WRMSSE(Metric):
         fwd = WRMSSE._fwd_mean_squared_diff(h, ref, pre)
         bwd = WRMSSE._bwd_mean_squared_diff(b, ref)
         return da.sqrt(
-            fwd[b + 1 + h // 2 : fwd.shape[0] - h // 2]
+            fwd[b + h // 2 : fwd.shape[0] - h // 2]
             / bwd[b // 2 : bwd.shape[0] - b // 2 - h]
         )
 
     @staticmethod
     def _bwd_mean_squared_diff(b: int, ref: DataArray) -> DataArray:
+        def ker(x: Array, **kwargs) -> DataArray:
+            """Returns the mean squared difference."""
+            return da.mean(da.square(da.diff(x)), axis=-1)
+
         return (
-            da.square(ref.diff(DID_TIM))
-            .rolling({DID_TIM: b}, min_periods=b)
-            .mean()
+            ref.rolling({DID_TIM: b}, min_periods=b, center=True)
+            .reduce(ker)
             .drop_vars(DID_TIM)
         )
 
@@ -310,8 +314,12 @@ class WRMSSE(Metric):
     def _fwd_mean_squared_diff(
         h: int, ref: DataArray, pre: DataArray
     ) -> DataArray:
+        def ker(x: Array, **kwargs) -> DataArray:
+            """Returns the mean value."""
+            return da.mean(x, axis=-1)
+
         return (
             da.square(ref - pre.data)
-            .rolling({DID_TIM: h}, min_periods=h)
-            .mean()
+            .rolling({DID_TIM: h}, min_periods=h, center=True)
+            .reduce(ker)
         )
