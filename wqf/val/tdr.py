@@ -109,9 +109,12 @@ def chlorophyll_mean_and_std():
         vmin=0.1,
         vmax=100.0,
     ).clear()
-    dev = da.sqrt(0.5 * da.square(
-        xr.where(trn < chl_q_hi, trn, np.nan).diff(DID_TIM)).mean(
-        DID_TIM))
+    dev = da.sqrt(
+        0.5
+        * da.square(xr.where(trn < chl_q_hi, trn, np.nan).diff(DID_TIM)).mean(
+            DID_TIM
+        )
+    )
     ScenePlot().plot(
         dev,
         title="Observations 2016 - 2020",
@@ -122,9 +125,12 @@ def chlorophyll_mean_and_std():
         vmin=0.1,
         vmax=100.0,
     ).clear()
-    dev = da.sqrt(0.5 * da.square(
-        xr.where(val < chl_q_hi, val, np.nan).diff(DID_TIM)).mean(
-        DID_TIM))
+    dev = da.sqrt(
+        0.5
+        * da.square(xr.where(val < chl_q_hi, val, np.nan).diff(DID_TIM)).mean(
+            DID_TIM
+        )
+    )
     ScenePlot().plot(
         dev,
         title="Observations 2020",
