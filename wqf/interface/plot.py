@@ -18,7 +18,7 @@ class Plot(metaclass=ABCMeta):
     @abstractmethod
     def plot(
         self,
-        data: DataArray | tuple[DataArray, DataArray],
+        data: DataArray | tuple[DataArray, DataArray] | None,
         xlabel: str | None = None,
         ylabel: str | None = None,
         xlim: tuple[Any, Any] | None = None,

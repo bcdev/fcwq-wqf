@@ -58,6 +58,10 @@ VID_CHL = "chl"
 VID_DEP = "deptho"
 """The sea floor depth (m) variable identifier."""
 
+VID_MDT = "mdt"
+"""The mean dynamic topography (m) variable identifier."""
+
+"""The sea floor depth (m) variable identifier."""
 VID_NO3 = "no3"
 """
 The concentration of nitrates (mmol m-3) variable identifier.
