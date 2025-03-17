@@ -42,7 +42,7 @@ def create_bounding_rectangle(lon_point, lat_point, offset=0.01):
 
 # Define root directory
 ROOT = "."
-DATA = ROOT  # os.path.join(ROOT, "Data")
+DATA = "/eodata/related/FC_WQ/cubes"  # os.path.join(ROOT, "Data")
 FIGS = os.path.join(ROOT, "Figures")
 
 # List all Zarr files in the directory
@@ -57,6 +57,8 @@ for file in zarr_files:
     if not file.endswith("zarr"):
         continue
     model = file.split("_")[1]
+    if model == "bgcm":
+        continue
     file_path = os.path.join(DATA, file)
 
     print(f"Opening {file} as {model}")
@@ -70,6 +72,9 @@ for file in zarr_files:
         xgb_models[model] = dataset
     else:
         continue
+
+xgb_models = dict(sorted(xgb_models.items()))
+
 
 # Select Validation year and count the number of observations
 chl_2020 = cube["chl"].sel(time=slice("2020-01-01", "2020-12-31"))
@@ -730,7 +735,7 @@ im1 = axs[0].imshow(
     cmap="viridis",
     origin="lower",
     vmin=0.0,
-    vmax=18.0,
+    vmax=16.0,
     extent=[time_dim[0], time_dim[-1], 0, 1],
 )
 axs[0].set_ylabel("observed")
@@ -745,7 +750,7 @@ for i, model in enumerate(models_list):
         cmap="viridis",
         origin="lower",
         vmin=0.0,
-        vmax=18.0,
+        vmax=16.0,
         extent=[time_dim[0], time_dim[-1], 0, 1],
     )
     axs[i + 1].set_ylabel(f"{model_labels[i]}")
