@@ -179,5 +179,5 @@ def get_logger() -> Logging:
 
     :return: The logger.
     """
-    global _logger
+    global _logger  # noqa: F824
     return _logger
