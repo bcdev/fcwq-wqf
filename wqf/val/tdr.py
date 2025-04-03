@@ -13,8 +13,6 @@ import numpy as np
 import xarray as xr
 from matplotlib import colors as plc
 
-from wqf.interface.constants import DID_LAT
-from wqf.interface.constants import DID_LON
 from wqf.interface.constants import DID_TIM
 from wqf.readerfactory import ReaderFactory
 from wqf.val.period import Period
@@ -147,25 +145,17 @@ def chlorophyll_variability():
     """
     The variability of the (spatial) mean chlorophyll concentration within
     the annual cycle illustrates blooms in spring and fall.
-
-    The figure considers coastal waters only, which are our main interest.
     """
     DensityPlot().plot(
-        (
-            cube.doy,
-            xr.where(cube.deptho < 30.0, cube.chl, np.nan).mean(
-                [DID_LAT, DID_LON]
-            ),
-        ),
+        (cube.doy, cube.chl),
         xlabel="day of year",
-        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
         fn="fig08",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
-        hist_range=((40, 310), (0.0, 10)),
-        vmin=0.0,
-        vmax=6.0,
+        hist_range=((60, 290), (0.0, 50)),
+        norm=plc.SymLogNorm(100.0, vmin=0.0, vmax=1000000.0),
     ).clear()
 
 
@@ -222,7 +212,7 @@ def number_of_chlorophyll_observations_from_space():
         fn="fig10",
         bins=25,
         log=True,
-        hist_range=(0.0, 100.0),
+        hist_range=(0.03, 30.0),
     ).clear()
 
 
@@ -242,32 +232,21 @@ def depth_of_sea_floor():
     mainly.
     """
     ScenePlot().plot(
-        cube.deptho,
+        cube.deptho.mean(DID_TIM),
         fn="fig11",
         cbar_label="sea floor depth below geoid (m)",
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
     ).clear()
     DensityPlot().plot(
-        (cube.deptho, cube.chl.mean(DID_TIM)),
+        (cube.deptho, cube.chl),
         xlabel="sea floor depth below geoid (m)",
-        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
         fn="fig12",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
         hist_range=((0.0, 50.0), (0.0, 50.0)),
-        norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    ).clear()
-    DensityPlot().plot(
-        (cube.deptho, cube.chl.std(DID_TIM)),
-        xlabel="sea floor depth below geoid (m)",
-        ylabel=r"std. dev. of chlorophyll concentration (mg m$^{-3}$)",
-        fn="fig13",
-        bins=(50, 50),
-        cbar_label="number count",
-        density=False,
-        hist_range=((0.0, 50.0), (0.0, 50.0)),
-        norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
+        norm=plc.SymLogNorm(100.0, vmin=0.0, vmax=1000000.0),
     ).clear()
 
 
@@ -282,70 +261,59 @@ def examples_of_statistical_correlations():
     correlation separately.
     """
     DensityPlot().plot(
-        (cube.mdt, cube.chl.mean(DID_TIM)),
+        (cube.mdt, cube.chl),
         xlabel="mean dynamic topography (m)",
-        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
         fn="fig14",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
         hist_range=((-0.53, -0.27), (0.0, 50.0)),
-        norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
+        norm=plc.SymLogNorm(100.0, vmin=0.0, vmax=1000000.0),
     ).clear()
     DensityPlot().plot(
-        (cube.sst.mean(DID_TIM), cube.chl.mean(DID_TIM)),
+        (cube.sst, cube.chl),
         xlabel="sea surface temperature (K)",
-        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
         fn="fig15",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
-        hist_range=((284.0, 289.0), (0.0, 50.0)),
-        norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
+        hist_range=((270.0, 300.0), (0.0, 50.0)),
+        norm=plc.SymLogNorm(100.0, vmin=0.0, vmax=1000000.0),
     ).clear()
     DensityPlot().plot(
-        (cube.sst.std(DID_TIM), cube.chl.mean(DID_TIM)),
-        xlabel="sea surface temperature (K)",
-        ylabel=r"std. dev. of chlorophyll concentration (mg m$^{-3}$)",
-        fn="fig16",
-        bins=(50, 50),
-        cbar_label="number count",
-        density=False,
-        hist_range=((2.0, 7.0), (0.0, 50.0)),
-        norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
-    ).clear()
-    DensityPlot().plot(
-        (cube.so.mean(DID_TIM), cube.chl.mean(DID_TIM)),
-        xlabel="surface salinity (10-3)",
-        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        (cube.so, cube.chl),
+        xlabel=r"sea water salinity (10$^{-3}$)",
+        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
         fn="fig17",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
         hist_range=((0.0, 50.0), (0.0, 50.0)),
-        norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
+        norm=plc.SymLogNorm(100.0, vmin=0.0, vmax=1000000.0),
     ).clear()
     DensityPlot().plot(
-        (cube.mlotst.mean(DID_TIM), cube.chl.mean(DID_TIM)),
+        (cube.mlotst, cube.chl),
         xlabel="mixed layer thickness (m)",
-        ylabel=r"mean chlorophyll concentration (mg m$^{-3}$)",
+        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
         fn="fig18",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
         hist_range=((0.0, 50.0), (0.0, 50.0)),
-        norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
+        norm=plc.SymLogNorm(100.0, vmin=0.0, vmax=1000000.0),
     ).clear()
     DensityPlot().plot(
-        (cube.mlotst.mean(DID_TIM), cube.deptho),
-        xlabel="sea floor depth below geoid  (m)",
-        ylabel="mixed layer thickness (m)",
-        fn="fig19",
+        (cube.no3, cube.chl),
+        xlabel=r"nitrate concentration (mmol m$^{-3}$)",
+        ylabel=r"chlorophyll concentration (mg m$^{-3}$)",
+        fn="fig20",
         bins=(50, 50),
         cbar_label="number count",
         density=False,
         hist_range=((0.0, 200.0), (0.0, 50.0)),
-        norm=plc.SymLogNorm(1.0, vmin=0.0, vmax=2000.0),
+        norm=plc.SymLogNorm(100.0, vmin=0.0, vmax=1000000.0),
     ).clear()
 
 
@@ -370,7 +338,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     reader = ReaderFactory.create_reader(args.aws)
-    cube = reader.read(args.cube_id, depth_level=3.0, unify=False)
+    cube = reader.read(args.cube_id, depth_level=3.0, unify=True)
     chl_q_lo = cube.chl.quantile(0.005, dim=DID_TIM).compute()
     chl_q_hi = cube.chl.quantile(0.995, dim=DID_TIM).compute()
 
