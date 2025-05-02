@@ -91,7 +91,7 @@ class _DefaultLogger(Logging):
 
     @override
     def warning(self, msg: str, *args, **kwargs):  # noqa: D102
-        self._logger.error(msg, *args, **kwargs)
+        self._logger.warning(msg, *args, **kwargs)
 
     @override
     def error(self, msg: str, *args, **kwargs):  # noqa: D102
