@@ -31,21 +31,44 @@ def chlorophyll_quantiles():
     concentration in open waters, which could be artifacts of
     undetected clouds.
     """
+    trn = Period(2016, 2019).slice(cube.chl)
+    val = Period(2020, 2020).slice(cube.chl)
+
     ScenePlot().plot(
-        chl_q_lo,
-        title="Observations 2016 - 2020",
-        fn="fig01",
-        cbar_label=r"quantile $0.01$ of chlorophyll concentration (mg m$^{-3}$)",
+        trn.quantile(0.025, dim=DID_TIM),
+        title="Observations 2016 - 2019",
+        fn="fig01a",
+        cbar_label=r"percentile $2.5$ of chlorophyll concentration (mg m$^{-3}$)",
         norm=plc.LogNorm(),
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
         vmin=0.1,
         vmax=100.0,
     ).clear()
     ScenePlot().plot(
-        chl_q_hi,
-        title="Observations 2016 - 2020",
-        fn="fig02",
-        cbar_label=r"quantile $0.99$ of chlorophyll concentration (mg m$^{-3}$)",
+        val.quantile(0.025, dim=DID_TIM),
+        title="Observations 2020",
+        fn="fig01b",
+        cbar_label=r"percentile $2.5$ of chlorophyll concentration (mg m$^{-3}$)",
+        norm=plc.LogNorm(),
+        xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
+        vmin=0.1,
+        vmax=100.0,
+    ).clear()
+    ScenePlot().plot(
+        trn.quantile(0.975, dim=DID_TIM),
+        title="Observations 2016 - 2019",
+        fn="fig02a",
+        cbar_label=r"percentile $97.5$ of chlorophyll concentration (mg m$^{-3}$)",
+        norm=plc.LogNorm(),
+        xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
+        vmin=0.1,
+        vmax=100.0,
+    ).clear()
+    ScenePlot().plot(
+        val.quantile(0.975, dim=DID_TIM),
+        title="Observations 2020",
+        fn="fig02b",
+        cbar_label=r"percentile $97.5$ of chlorophyll concentration (mg m$^{-3}$)",
         norm=plc.LogNorm(),
         xlocs=(1.0, 2.5, 4.0, 5.5, 7.0, 8.5, 10.0),
         vmin=0.1,
@@ -339,8 +362,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     reader = ReaderFactory.create_reader(args.aws)
     cube = reader.read(args.cube_id, depth_level=3.0, unify=True)
-    chl_q_lo = cube.chl.quantile(0.005, dim=DID_TIM).compute()
-    chl_q_hi = cube.chl.quantile(0.995, dim=DID_TIM).compute()
+    chl_q_lo = cube.chl.quantile(0.025, dim=DID_TIM).compute()
+    chl_q_hi = cube.chl.quantile(0.975, dim=DID_TIM).compute()
 
     chlorophyll_quantiles()
 
