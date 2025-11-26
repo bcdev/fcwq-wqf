@@ -138,7 +138,7 @@ def chlorophyll_mean_and_std():
     )
     ScenePlot().plot(
         dev,
-        title="Observations 2016 - 2020",
+        title="Observations 2016 - 2019",
         fn="fig05a",
         cbar_label=r"Allan dev. chlorophyll concentration (mg m$^{-3}$)",
         norm=plc.LogNorm(),
