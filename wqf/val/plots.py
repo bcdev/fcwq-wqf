@@ -359,7 +359,7 @@ def hist(
     )
 
 
-def rand(data: [DataArray, DataArray], sample_count: int) -> Dataset:
+def rand(data: tuple[DataArray, DataArray], sample_count: int) -> Dataset:
     """
     Returns a dataset of (x, y) samples randomly drawn from the data
     supplied as argument.
