@@ -79,7 +79,7 @@ class Reader(Reading):
     _config: dict[Any, Any]
     """The reader configuration."""
 
-    def __init__(self, config: dict[str:Any] | None = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         """
         Creates a new reader instance.
 
@@ -161,7 +161,7 @@ class Reader(Reading):
         return self._engine
 
     @property
-    def _chunks(self) -> dict[str:int]:
+    def _chunks(self) -> dict[str, int]:
         """This method does not belong to public API."""
         return self._config[_KEY_CHUNKS]
 
