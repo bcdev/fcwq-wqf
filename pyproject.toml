@@ -45,7 +45,7 @@ dependencies = [
     "netcdf4",
     "xarray",
     "xbatcher==0.4.0",
-    "xcube-core",
+    # no "xcube-core",
     "xgboost==2.1.4",
     "zarr",
 ]
