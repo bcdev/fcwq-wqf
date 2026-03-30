@@ -41,6 +41,7 @@ dependencies = [
     "dask-image",
     "cartopy",
     "h5netcdf",
+    "h5py",
     "matplotlib",
     "netcdf4",
     "xarray",
