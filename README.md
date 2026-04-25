@@ -23,8 +23,8 @@ retrievals of chlorophyll concentration and several covariates, which are
 routinely provided by reanalysis and forecast services based on biological,
 chemical, physical, and meteorological models.
 
-[![Package](https://github.com/bcdev/fcwq-wqf/actions/workflows/python-package.yml/badge.svg)](https://github.com/bcdev/fcwq-wqf/actions/workflows/python-package.yml)
 [![CodeQL Advanced](https://github.com/bcdev/fcwq-wqf/actions/workflows/codeql.yml/badge.svg)](https://github.com/bcdev/fcwq-wqf/actions/workflows/codeql.yml)
+[![Package](https://github.com/bcdev/fcwq-wqf/actions/workflows/python-package.yml/badge.svg)](https://github.com/bcdev/fcwq-wqf/actions/workflows/python-package.yml)
 [![codecov](https://codecov.io/github/bcdev/fcwq-wqf/graph/badge.svg?token=UNdi5jfQML)](https://codecov.io/github/bcdev/fcwq-wqf)
 
 ## Installing and testing
